@@ -206,7 +206,7 @@ const Post = ({ post, postedBy }) => {
         <Link to={`/${username}/post/${post._id}`}>
             <Flex gap={3} mb={4} py={5} >
                 <Flex flexDirection={"column"} alignItems={"center"}>
-                    <Avatar size="sm" name={user?.name} src={user?.profilePic}
+                    <Avatar size={8} name={user?.data.name} src={user?.data.profilePic}
                         onClick={(e) => {
                             e.preventDefault()
                             navigate(`${username}`)
@@ -262,10 +262,11 @@ const Post = ({ post, postedBy }) => {
                 </Flex>
                 <Flex flex={1} flexDirection={"column"} gap={2}>
                     <Flex justifyContent={"space-between"} w={"full"}>
-                        <Flex w={"full"} justifyContent={"center"}>
+                        <Flex w={"full"} justifyContent={"center"} marginRight={258}>
                             {/* <Text fontSize={"sm"} fontWeight={"bold"}>{username}</Text> */}
                             <Text
-                                fontSize={"sm"}
+                                // marginRight={8}
+                                fontSize={14}
                                 fontWeight={"bold"}
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -302,12 +303,12 @@ const Post = ({ post, postedBy }) => {
 
                     </Flex>
 
-                    {/* <Flex gap={2} alignItems={"center"}>
-                        <Text color={"gray.light"} fontSize={"sm"}>{post.replies.length} replies</Text>
+                    <Flex gap={2} alignItems={"center"}>
+                        <Text color={"gray.light"} fontSize={"sm"}>{post?.replies?.length} replies</Text>
                         <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"} flexDirection={"row"}>
                         </Box>
-                        <Text color={"gray.light"} fontSize={"sm"} >{post.likes.length} likes</Text>
-                    </Flex> */}
+                        <Text color={"gray.light"} fontSize={"sm"} >{post?.likes?.length} likes</Text>
+                    </Flex>
 
                 </Flex>
             </Flex>

@@ -129,9 +129,11 @@ import { Flex, Spinner } from '@chakra-ui/react';
 import Post from '../components/Post';
 import { useRecoilState } from 'recoil';
 import postsAtom from '../atoms/postsAtom'
+// import useGetUserProfile from "../hooks/useGetUserProfile";
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
+  // const { user } = useGetUserProfile()
   const { username } = useParams();
   const showToast = useShowToast();
   const [loading, setLoading] = useState(true);
@@ -158,7 +160,7 @@ const UserPage = () => {
           showToast('error', data.error, 'Error');
           return;
         }
-        setUser(data);
+        setUser(data.data);
       } catch (error) {
         showToast('error', 'Error while loading user profile');
       } finally {
@@ -174,14 +176,14 @@ const UserPage = () => {
     if (!user) return;
 
     const getPosts = async () => {
-      console.log();
+      // console.log();
       setFetchingPosts(true);
       try {
         const res = await fetch(`http://localhost:3000/api/posts/user/${username}`, {
           method: 'GET',
         });
         const data = await res.json();
-        setPosts(data.data);
+        setPosts(data);
       } catch (error) {
         showToast('error', error.message, 'Error');
         setPosts([]);
@@ -192,7 +194,7 @@ const UserPage = () => {
 
     getPosts();
   }, [user, username, showToast]);
-  console.log(posts.data)
+  console.log(posts)
 
   if (loading) {
     return (
@@ -205,6 +207,7 @@ const UserPage = () => {
   if (!user && !loading) {
     return <h1>User not found</h1>;
   }
+  console.log(user);
 
   return (
     <div>
@@ -219,7 +222,7 @@ const UserPage = () => {
         <Post key={post._id} post={post} postedBy={post.postedBy} />
       ))} */}
 
-      {!fetchingPosts && posts.map((post) => (
+      {!fetchingPosts && posts.data.map((post) => (
         <Post key={post._id} post={post} postedBy={post.postedBy} />
       ))}
     </div>

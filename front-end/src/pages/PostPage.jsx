@@ -49,7 +49,7 @@ const PostPage = () => {
 
 
     const handleDeletePost = async () => {
-        const token = currentUser.data.token
+        const token = currentUser?.data.accessToken
         console.log(token);
         try {
             if (!window.confirm("Are you sure you want to delete this post?")) return;
@@ -65,7 +65,7 @@ const PostPage = () => {
                 return;
             }
             showToast("Success", "Post deleted", "success");
-            navigate(`/${user.data.username}`);
+            navigate(`/${currentPost?.data.postedBy.username}`);
         } catch (error) {
             showToast("Error", error.message, "error");
         }
@@ -81,6 +81,7 @@ const PostPage = () => {
 
     if (!currentPost) return null;
     console.log("currentPost", currentPost);
+    console.log(currentPost.data._id);
 
     return (
         <>
@@ -115,7 +116,8 @@ const PostPage = () => {
             )}
 
             <Flex gap={3} my={3}>
-                <Actions post={currentPost} />
+                <Actions post={currentPost.data} />
+                {/* <Actions /> */}
             </Flex>
 
             <Divider my={4} />
@@ -130,6 +132,7 @@ const PostPage = () => {
 
             <Divider my={4} />
             {currentPost.data.replies.map((reply) => (
+                
                 <Comment
                     key={reply._id}
                     reply={reply}
@@ -141,3 +144,5 @@ const PostPage = () => {
 };
 
 export default PostPage;
+
+

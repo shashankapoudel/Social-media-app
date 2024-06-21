@@ -18,17 +18,21 @@ import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast.jsx";
+import { useParams } from "react-router-dom";
 // import postsAtom from "../atoms/postsAtom";
 
 const Actions = ({ post: post_ }) => {
+    console.log(post_._id);
     const user = useRecoilValue(userAtom);
     console.log(user);
     const [post, setPost] = useState(post_);
-    const [liked, setLiked] = useState(post_.likes.includes(user?.data.user._id));
+    const [liked, setLiked] = useState(post_?.likes?.includes(user?.data.user._id));
     // const [posts, setPosts] = useRecoilState(postsAtom);
     const [isLiking, setIsLiking] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
     const [reply, setReply] = useState("");
+    const { pid } = useParams()
+    // console.log(pid);
     console.log(user);
     // console.log(user.data.user._id);
 
@@ -41,9 +45,10 @@ const Actions = ({ post: post_ }) => {
         if (isLiking) return;
         setIsLiking(true);
         const token = user.data.accessToken
+        console.log(post._id);
 
         try {
-            const res = await fetch(`http://localhost:3000/api/posts/like/${post._id}`, {
+            const res = await fetch(`http://localhost:3000/api/posts/like/${post_._id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -57,23 +62,10 @@ const Actions = ({ post: post_ }) => {
             if (data.error) return showToast("Error", data.error, "error");
 
             if (!liked) {
-                // add the id of the current user to post.likes array
-                // const updatedPosts = posts.map((p) => {
-                //     if (p._id === post._id) {
-                //         return { ...p, likes: [...p.likes, user._id] };
-                //     }
-                //     return p;
-                // });
+
                 setPost({ ...post, likes: [...post.likes, user.data.user._id] });
             } else {
-                // remove the id of the current user from post.likes array
-                // const updatedPosts = posts.map((p) => {
-                //     if (p._id === post._id) {
-                //         return { ...p, likes: p.likes.filter((id) => id !== user._id) };
-                //     }
-                //     return p;
-                // });
-                // setPosts(updatedPosts);
+
                 setPost({ ...post, likes: post.likes.filter((id) => id !== user.data.user._id) })
             }
 
@@ -102,16 +94,22 @@ const Actions = ({ post: post_ }) => {
             });
             const data = await res.json();
             console.log(data);
+            console.log(data.data.replies);
             console.log(res);
+            setReply(data)
+            console.log(reply);
             if (data.error) return showToast("Error", data.error, "error");
+            console.log(post);
+            // setPost({ ...post, replies: [...post.replies, user.data.user.reply] });
+            // setPost({ ...post, replies: [...post.replies, reply] })
+            const newReply = data.data.replies[data.data.replies.length - 1];
 
-            // const updatedPosts = post.map((p) => {
-            //     if (p._id === post._id) {
-            //         return { ...p, replies: [...p.replies, data] };
-            //     }
-            //     return p;
-            // });
-            setPost({ ...post, replies: [...post.replies, data.reply] });
+            // Update the post state with the new reply
+            setPost((prevPost) => ({
+                ...prevPost,
+                replies: [...prevPost.replies, newReply],
+            }));
+            console.log(post);
             showToast("Success", "Reply posted successfully", "success");
             onClose();
             setReply("");
@@ -168,10 +166,10 @@ const Actions = ({ post: post_ }) => {
             </Flex>
 
             <Flex gap={2} alignItems={"center"}>
-                <Text color={"gray.light"} fontSize={"sm"}>{post.replies.length} replies</Text>
+                <Text color={"gray.light"} fontSize={"sm"}>{post?.replies?.length} replies</Text>
                 <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"} flexDirection={"row"}>
                 </Box>
-                <Text color={"gray.light"} fontSize={"sm"} >{post.likes.length} likes</Text>
+                <Text color={"gray.light"} fontSize={"sm"} >{post?.likes?.length} likes</Text>
             </Flex>
 
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -256,3 +254,4 @@ const ShareSVG = () => {
         </svg>
     );
 };
+

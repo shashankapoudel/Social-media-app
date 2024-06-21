@@ -17,6 +17,9 @@ const CreatePost = () => {
     const user = useRecoilValue(userAtom)
     const [loading, setLoading] = useState(false)
     const [postText, setPostText] = useState('')
+    console.log(user);
+    // console.log(user.data.user._id);
+    // console.log(user.data._id);
 
     // console.log(imgUrl);
 
@@ -42,19 +45,8 @@ const CreatePost = () => {
 
         const token = user.data.accessToken
 
-
-        // const token = Cookies.get('token');
         console.log(token);
-        // let imageBase64 = '';
-        // if (imageRef.current && imageRef.current.files[0]) {
-        //     try {
-        //         imageBase64 = await convertToBase64(imageRef.current.files[0]);
-        //     } catch (error) {
-        //         console.error("Error converting image to Base64:", error);
-        //         setLoading(false);
-        //         return;
-        //     }
-        // }
+
 
 
         try {
