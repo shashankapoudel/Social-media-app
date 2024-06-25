@@ -124,7 +124,9 @@ const replyToPost = asyncHandler(async (req, res) => {
         throw new ApiError(400, 'Post not found')
     }
     const reply = { userId, username, profilePic, text }
+    console.log(reply);
     post.replies.push(reply);
+    await post.save()
     return res.status(201).json(new ApiResponse(200, post, 'Replied successfully'))
 
 

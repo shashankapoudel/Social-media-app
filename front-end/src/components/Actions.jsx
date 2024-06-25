@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 // import postsAtom from "../atoms/postsAtom";
 
 const Actions = ({ post: post_ }) => {
-    console.log(post_._id);
+    // console.log(post_._id);
     const user = useRecoilValue(userAtom);
     console.log(user);
     const [post, setPost] = useState(post_);
@@ -103,6 +103,7 @@ const Actions = ({ post: post_ }) => {
             // setPost({ ...post, replies: [...post.replies, user.data.user.reply] });
             // setPost({ ...post, replies: [...post.replies, reply] })
             const newReply = data.data.replies[data.data.replies.length - 1];
+            console.log(newReply);
 
             // Update the post state with the new reply
             setPost((prevPost) => ({

@@ -29,7 +29,7 @@ const postSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
-            userProfilePic: {
+            profilePic: {
                 type: String,
             },
             username: {

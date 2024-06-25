@@ -32,6 +32,11 @@ const PostPage = () => {
             setPosts([]);
             try {
                 const res = await fetch(` http://localhost:3000/api/posts/${pid}`);
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    showToast("Error", errorData.error || "Failed to fetch post", "error");
+                    return;
+                }
                 const data = await res.json();
                 console.log(data);
                 if (data.error) {
@@ -57,6 +62,7 @@ const PostPage = () => {
             const res = await fetch(`http://localhost:3000/api/posts/${pid}`, {
                 method: "DELETE",
                 "Authorization": `Bearer ${token}`,
+           
             });
             const data = await res.json();
             console.log(data);
@@ -137,8 +143,7 @@ const PostPage = () => {
                     key={reply._id}
                     reply={reply}
                     lastReply={reply._id === currentPost.data.replies[currentPost.data.replies.length - 1]._id}
-                />
-            ))}
+                />))}
         </>
     );
 };
