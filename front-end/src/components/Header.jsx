@@ -10,7 +10,6 @@ const Header = () => {
     const user = useRecoilValue(userAtom);
 
     console.log(user);
-    // console.log(user.data.user.username);
 
     const { colorMode, toggleColorMode } = useColorMode()
     return (

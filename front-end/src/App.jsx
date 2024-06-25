@@ -1,6 +1,3 @@
-
-
-
 import { Container, ChakraProvider, } from '@chakra-ui/react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RecoilRoot, useRecoilValue } from 'recoil';

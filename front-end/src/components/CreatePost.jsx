@@ -5,8 +5,6 @@ import usePreviewImg from '../hooks/usePreviewImg'
 import { BsFillImageFill } from 'react-icons/bs'
 import { useRecoilValue } from 'recoil'
 import userAtom from "../atoms/userAtom"
-import Cookies from 'js-cookie';
-
 const MAX_CHAR = 500;
 
 const CreatePost = () => {
@@ -18,12 +16,6 @@ const CreatePost = () => {
     const [loading, setLoading] = useState(false)
     const [postText, setPostText] = useState('')
     console.log(user);
-    // console.log(user.data.user._id);
-    // console.log(user.data._id);
-
-    // console.log(imgUrl);
-
-
 
     const handleTextChange = (e) => {
         const inputText = e.target.value;

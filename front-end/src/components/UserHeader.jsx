@@ -14,19 +14,13 @@ import useShowToast from '../hooks/useShowToast'
 
 const UserHeader = ({ user }) => {
     console.log(user)
-    // console.log(user.data.name);
     const currentUser = useRecoilValue(userAtom)
-    // console.log(currentUser.data.user._id);
-    // console.log(currentUser.data.accessToken);
-    // console.log(currentUser);
     const [following, setFollowing] = useState(user.followers.includes(currentUser?.data.user._id))
     const [updating, setUpdating] = useState(false)
-    // console.log(user.data.followers);
     const showToast = useShowToast();
     const toast = useToast()
     const copyURL = () => {
         const currentUrl = window.location.href;
-        // console.log(currentUrl);
         navigator.clipboard.writeText(currentUrl).then(() => {
             console.log('URL copied to clipboard');
             toast({
@@ -69,8 +63,6 @@ const UserHeader = ({ user }) => {
         }
 
     }
-    // console.log(currentUser.data.user._id === user.data._id);
-
     return (
         <VStack gap={4} alignItems={"start"}>
             <Flex justifyContent={"space-between"} w={"full"}>

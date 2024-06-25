@@ -11,11 +11,9 @@ import postsAtom from '../atoms/postsAtom'
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
-  // const { user } = useGetUserProfile()
   const { username } = useParams();
   const showToast = useShowToast();
   const [loading, setLoading] = useState(true);
-  // const [posts, setPosts] = useState([]);
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [fetchingPosts, setFetchingPosts] = useState(true);
 
@@ -96,10 +94,6 @@ const UserPage = () => {
           <Spinner size={'xl'} />
         </Flex>
       )}
-      {/* {posts.map((post) => (
-        <Post key={post._id} post={post} postedBy={post.postedBy} />
-      ))} */}
-
       {!fetchingPosts && posts.data.map((post) => (
         <Post key={post._id} post={post} postedBy={post.postedBy} />
       ))}

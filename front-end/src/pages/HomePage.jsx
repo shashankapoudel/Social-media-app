@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from 'react';
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
