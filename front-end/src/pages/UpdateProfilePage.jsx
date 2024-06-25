@@ -1,6 +1,3 @@
-
-
-
 import {
     Button,
     Flex,
@@ -59,13 +56,6 @@ export default function UpdateProfilePage() {
             }
             showToast("Success", "Profile updated successfully", "success");
 
-            // const updatedUser = {
-            //     ...user,
-            //     data: {
-            //         ...user.data,
-            //         user: { ...user.data.user, ...data.user }
-            //     }
-            // };
             const updatedUser = {
                 ...user,
                 data: {

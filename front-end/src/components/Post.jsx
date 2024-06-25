@@ -1,15 +1,10 @@
-
-
-
 import { Avatar, Box, Flex, Image, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom'
 import Actions from './Actions'
 import useShowToast from '../hooks/useShowToast'
-// import { formatDistanceFromNow } from 'date-fns';
 import { formatDistanceToNow } from 'date-fns';
-// import formatDistanceFromNow from 'date-fns/formatDistanceFromNow';
 
 
 const Post = ({ post, postedBy }) => {
@@ -35,7 +30,7 @@ const Post = ({ post, postedBy }) => {
                     return;
                 }
                 setUser(data);
-                // console.log(setUser);
+
             } catch (error) {
                 showToast("Error", error.message, "error");
                 setUser(null);
