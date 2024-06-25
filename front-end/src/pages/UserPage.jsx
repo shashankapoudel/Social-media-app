@@ -1,8 +1,4 @@
 
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import UserHeader from '../components/UserHeader';
 import { useParams } from 'react-router-dom';
