@@ -233,42 +233,6 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 
-// const updateUser = asyncHandler(async (req, res) => {
-//     const { name, username, email, password, bio } = req.body
-//     let profilePic = req.body
-//     const userId = req.user._id;
-
-//     const user = await User.findById(userId);
-//     if (!user) {
-//         throw new ApiError(400, "User not found")
-//     }
-//     if (password) {
-//         const salt = await bcrypt.genSalt(10)
-//         const hashedPassword = await bcrypt.hash(password, salt);
-//         user.password = hashedPassword
-//     }
-//     // if (profilePic) {
-//     if (user.profilePic) {
-//         await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0])
-//     }
-//     // const uploadedResponse = await cloudinary.uploader.upload(profilePic)
-//     // profilePic = uploadedResponse.secure_url;
-
-//     user.name = name || user.name
-//     user.email = email || user.email
-//     user.username = username || user.username
-//     user.bio = bio || user.bio
-//     user.profilePic = profilePic || user.profilePic
-
-//     const newuser = await user.save()
-//     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
-
-//     return res.status(201).json(
-//         new ApiResponse(200, { user: newuser, accessToken }, "User updated successfully"
-//         )
-//     )
-
-// })
 
 
 const getUserProfile = asyncHandler(async (req, res) => {
