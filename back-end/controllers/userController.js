@@ -6,8 +6,6 @@ import bcrypt from 'bcryptjs'
 import { useParams } from "react-router-dom"
 import { v2 as cloudinary } from "cloudinary"
 
-
-
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
         const user = await User.findById(userId)
@@ -30,29 +28,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
 }
 
-// import jwt from 'jsonwebtoken';
-
-// const generateAccessAndRefreshTokens = (userId) => {
-//     const accessToken = jwt.sign(
-//         { userId },
-//         process.env.JWT_SECRET,
-//         { expiresIn: '15m'} // Specify the algorithm explicitly
-//     );
-
-//     const refreshToken = jwt.sign(
-//         { userId },
-//         process.env.JWT_REFRESH_SECRET,
-//         { expiresIn: '7d', } // Specify the algorithm explicitly
-//     );
-
-//     return { accessToken, refreshToken };
-// };
-
-
-
-
-
-
 
 const signupUser = asyncHandler(async (req, res) => {
     const { name, email, password, username } = req.body
@@ -64,17 +39,10 @@ const signupUser = asyncHandler(async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt);
-
-
     const newUser = await User.create({
         name, email, username,
         password: hashedPassword
-
     })
-    // generateTokenAndSetCookie(newUser._id, res);
-
-    // const {accessToken}=generateAccessAndRefreshTokens(newUser._id)
-
     const createdUser = await User.findById(newUser._id).select(
         "-password"
     )
@@ -82,14 +50,10 @@ const signupUser = asyncHandler(async (req, res) => {
         throw ApiError(500, "Something Went Wrong while registring the user")
     }
     if (newUser) {
-        // generateTokenAndSetCookie(newUser._id, res);
-
 
         return res.status(201).json(new ApiResponse(200, newUser, "Success",))
     }
 })
-
-
 
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -113,20 +77,13 @@ const loginUser = asyncHandler(async (req, res) => {
     const options = {
         httpOnly: true,
         secure: true
-
     }
-
     return res.status(200).cookie("accessToken", accessToken, options).cookie("refreshToken", refreshToken, options).json(
         new ApiResponse(200, {
             user: loggedInUser, accessToken, refreshToken
         }, "User logged In Successfully")
     )
-
-
-
 })
-
-
 
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -135,7 +92,6 @@ const logoutUser = asyncHandler(async (req, res) => {
         $unset: {
             refreshToken: 1
         }
-
     }, {
         new: true
     }
@@ -147,10 +103,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     return res.status(200).clearCookie("accessToken", options).clearCookie("refreshToken", options).json(
         new ApiResponse(200, {}, "User logged Out")
     )
-
 })
-
-
 
 
 const followunfollowUser = asyncHandler(async (req, res) => {
@@ -187,12 +140,8 @@ const followunfollowUser = asyncHandler(async (req, res) => {
             )
         )
     }
-
-
-
-
-
 })
+
 
 const updateUser = asyncHandler(async (req, res) => {
     const { name, username, email, password, bio } = req.body; // Destructure profilePic here
@@ -231,8 +180,6 @@ const updateUser = asyncHandler(async (req, res) => {
         new ApiResponse(200, { user: newUser, accessToken }, "User updated successfully")
     );
 });
-
-
 
 
 const getUserProfile = asyncHandler(async (req, res) => {
