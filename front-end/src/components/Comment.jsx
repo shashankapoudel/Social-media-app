@@ -21,6 +21,7 @@ const Comment = ({ reply, lastReply }) => {
                     </Flex>
                     <Text>{reply.text}</Text>
                 </Flex>
+                
             </Flex>
             {!lastReply ? <Divider /> : null}
         </>

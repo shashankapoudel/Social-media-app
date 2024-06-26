@@ -62,7 +62,6 @@ const PostPage = () => {
             const res = await fetch(`http://localhost:3000/api/posts/${pid}`, {
                 method: "DELETE",
                 "Authorization": `Bearer ${token}`,
-           
             });
             const data = await res.json();
             console.log(data);
@@ -76,7 +75,6 @@ const PostPage = () => {
             showToast("Error", error.message, "error");
         }
     };
-
     if (!user && loading) {
         return (
             <Flex justifyContent={"center"}>
@@ -84,11 +82,9 @@ const PostPage = () => {
             </Flex>
         );
     }
-
     if (!currentPost) return null;
     console.log("currentPost", currentPost);
     console.log(currentPost.data._id);
-
     return (
         <>
             <Flex>
@@ -112,22 +108,17 @@ const PostPage = () => {
                     )}
                 </Flex>
             </Flex>
-
             <Text my={3}>{currentPost.data.text}</Text>
-
             {currentPost.data.img && (
                 <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
                     <Image src={currentPost.data.img} w={"full"} />
                 </Box>
             )}
-
             <Flex gap={3} my={3}>
                 <Actions post={currentPost.data} />
                 {/* <Actions /> */}
             </Flex>
-
             <Divider my={4} />
-
             <Flex justifyContent={"space-between"}>
                 <Flex gap={2} alignItems={"center"}>
                     <Text fontSize={"2xl"}>👋</Text>
@@ -135,10 +126,8 @@ const PostPage = () => {
                 </Flex>
                 <Button>Get</Button>
             </Flex>
-
             <Divider my={4} />
             {currentPost.data.replies.map((reply) => (
-
                 <Comment
                     key={reply._id}
                     reply={reply}
