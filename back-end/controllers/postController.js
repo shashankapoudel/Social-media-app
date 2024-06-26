@@ -49,9 +49,7 @@ const createPost = asyncHandler(async (req, res) => {
 })
 
 
-
 const getPost = asyncHandler(async (req, res) => {
-    // console.log('123k12;3lld;gmjlkfdgjmlkfdgjlkfdjglkfds', req.params._id);
     const { id: postId } = req.params
     console.log(postId);
     const post = await Post.findById(postId).populate('postedBy', 'username profilePic')
@@ -74,9 +72,7 @@ const deletePost = asyncHandler(async (req, res) => {
     if (!post) {
         throw new ApiError(400, "Post not found")
     }
-    if (post.postedBy.toString() !== req.user._id.toString(
-
-    )) {
+    if (post.postedBy.toString() !== req.user._id.toString()) {
         throw new ApiError(400, 'You are not authorized to delete post')
     }
     await Post.findByIdAndDelete(req.params.id)
@@ -98,7 +94,6 @@ const likeUnlikePost = asyncHandler(async (req, res) => {
     if (userLikedPost) {
         await Post.updateOne({ _id: postId }, { $pull: { likes: req.user._id } })
         return res.status(201).json(new ApiResponse(401, post, 'Post unliked'))
-        // await User.findByIdAndUpdate(req.user._id, {$pull:{likes: req.user._id}})
     }
     if (!userLikedPost) {
         await Post.updateOne({ _id: postId }, { $push: { likes: req.user._id } })
@@ -128,29 +123,20 @@ const replyToPost = asyncHandler(async (req, res) => {
     post.replies.push(reply);
     await post.save()
     return res.status(201).json(new ApiResponse(200, post, 'Replied successfully'))
-
-
 })
 
 
 const getFeedPosts = asyncHandler(async (req, res) => {
     const { postedBy } = req.body
-
     const userId = req.user._id;
     console.log(userId);
-
     const user = await User.findById(userId)
-    console.log('123');
-
 
     if (!user) {
         throw new ApiError(400, 'User is not found')
     }
     const following = user.following;
-    console.log('asdsad');
 
-
-    // const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({ createdAt: -1 })
     const feedPosts = await Post.find().sort({ createdAt: -1 }).populate('postedBy', 'username');
     console.log('feedPosts', feedPosts)
 

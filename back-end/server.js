@@ -26,25 +26,11 @@ const corsOptions = {
 
 //middlewares
 app.use(express.json({ limit: "50mb" }))
-
 app.use(express.urlencoded({ extended: true, limit: "50mb" }))
-
-// app.use(express.static("public"))
-
 app.use(cookieParser())
 app.use(cors(corsOptions))
-
 app.use("/api/users", userRoutes)
 app.use("/api/posts", postRoutes)
-
-
-// mongoose.connect(
-//     process.env.MONGO_URL,
-//     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
-//     () => {
-//         console.log('Connected to MongoDB');
-//     }
-// );
 
 app.listen(PORT, () =>
     console.log(`Server started at http://localhost:${PORT}`));
