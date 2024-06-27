@@ -43,7 +43,7 @@ const createPost = asyncHandler(async (req, res) => {
     const newPost = new Post({ postedBy, text, img })
     await newPost.save()
     const populatedPost = await newPost.populate('postedBy', 'username email');
-    return res.status(201).json(new ApiResponse(200, populatedPost, 'Post created Successfully'))
+    return res.status(200).json(new ApiResponse(200, populatedPost, 'Post created Successfully'))
 
 
 })
@@ -59,7 +59,7 @@ const getPost = asyncHandler(async (req, res) => {
     if (!post) {
         throw new ApiError(400, 'Post not found')
     }
-    return res.status(201).json(new ApiResponse(200, post))
+    return res.status(200).json(new ApiResponse(200, post))
 
 })
 
@@ -76,7 +76,8 @@ const deletePost = asyncHandler(async (req, res) => {
         throw new ApiError(400, 'You are not authorized to delete post')
     }
     await Post.findByIdAndDelete(req.params.id)
-    return res.status(201).json(new ApiResponse(200, "Post deleted"))
+    await Post.save()
+    return res.status(200).json(new ApiResponse(200, "Post deleted"))
 })
 
 
@@ -122,7 +123,39 @@ const replyToPost = asyncHandler(async (req, res) => {
     console.log(reply);
     post.replies.push(reply);
     await post.save()
-    return res.status(201).json(new ApiResponse(200, post, 'Replied successfully'))
+    return res.status(200).json(new ApiResponse(200, post, 'Replied successfully'))
+})
+
+
+const deleteReply = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const { replyId, postId } = req.params;
+    // console.log(replyId);
+    // console.log(postId);
+    // const replyId = req.params.id;
+
+    const user = await User.findById(userId)
+    if (!user) {
+        throw new ApiError(400, 'User not found')
+    }
+    const post = await Post.findById(postId)
+    if (!post) {
+        throw new ApiError(400, 'Post not found')
+    }
+    console.log(post);
+
+    const replyIndex = post.replies.findIndex(reply => reply._id.toString() == replyId.toString())
+    // if (replyIndex === -1) {
+    //     throw new ApiError(400, 'Reply not found');
+    // }
+    const reply = post.replies[replyIndex]
+
+    if (reply.userId.toString() == !userId.toString()) {
+        throw new ApiError(400, "You are not authorized to delete this reply")
+    }
+    post.replies.splice(replyIndex, 1)
+    await post.save();
+    return res.status(200).json(new ApiResponse(200, post, 'Reply deleted successfully'));
 })
 
 
@@ -140,7 +173,7 @@ const getFeedPosts = asyncHandler(async (req, res) => {
     const feedPosts = await Post.find().sort({ createdAt: -1 }).populate('postedBy', 'username');
     console.log('feedPosts', feedPosts)
 
-    return res.status(201).json(new ApiResponse(200, feedPosts, 'Your feed is ready'))
+    return res.status(200).json(new ApiResponse(200, feedPosts, 'Your feed is ready'))
 })
 
 
@@ -152,8 +185,8 @@ const getUserPosts = asyncHandler(async (req, res) => {
         throw new ApiError(400, "User is not found")
     }
     const posts = await Post.find({ postedBy: user._id }).populate('postedBy', 'username');
-    return res.status(201).json(new ApiResponse(200, posts, 'User post is ready'))
+    return res.status(200).json(new ApiResponse(200, posts, 'User post is ready'))
 
 })
 
-export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts } 
+export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts, deleteReply } 

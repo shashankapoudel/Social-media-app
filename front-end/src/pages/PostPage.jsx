@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import Actions from "../components/Actions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Comment from "../components/Comment";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import useShowToast from "../hooks/useShowToast";
@@ -15,6 +15,7 @@ import { BsFillTrainLightrailFrontFill } from "react-icons/bs";
 const PostPage = () => {
     const { user, loading } = useGetUserProfile();
     const [posts, setPosts] = useRecoilState(postsAtom);
+    // const [posts, setPosts] = useState([]);
     const showToast = useShowToast();
     const { pid } = useParams();
     const currentUser = useRecoilValue(userAtom);
@@ -22,6 +23,7 @@ const PostPage = () => {
     console.log(currentUser);
 
     const currentPost = posts[0];
+    // const currentPost = posts.find(post => post._id === pid);
     console.log(currentPost);
     const username = currentPost?.data.postedBy.username;
     const profilePic = currentPost?.data.postedBy.profilePic;
@@ -31,7 +33,12 @@ const PostPage = () => {
         const getPost = async () => {
             setPosts([]);
             try {
-                const res = await fetch(` http://localhost:3000/api/posts/${pid}`);
+                const res = await fetch(` http://localhost:3000/api/posts/${pid}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
                 if (!res.ok) {
                     const errorData = await res.json();
                     showToast("Error", errorData.error || "Failed to fetch post", "error");
@@ -60,8 +67,13 @@ const PostPage = () => {
             if (!window.confirm("Are you sure you want to delete this post?")) return;
 
             const res = await fetch(`http://localhost:3000/api/posts/${pid}`, {
-                method: "DELETE",
-                "Authorization": `Bearer ${token}`,
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                // method: "DELETE",
+                // "Authorization": `Bearer ${token}`,
             });
             const data = await res.json();
             console.log(data);
@@ -69,6 +81,8 @@ const PostPage = () => {
                 showToast("Error", data.error, "error");
                 return;
             }
+            // setPosts(prevPosts => prevPosts.filter(post => post._id == !pid))
+            setPosts(prevPosts => prevPosts.filter(post => post.data._id !== pid));
             showToast("Success", "Post deleted", "success");
             navigate(`/${currentPost?.data.postedBy.username}`);
         } catch (error) {

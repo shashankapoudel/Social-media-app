@@ -18,13 +18,14 @@ import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast.jsx";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import postsAtom from "../atoms/postsAtom";
 
 const Actions = ({ post: post_ }) => {
     // console.log(post_._id);
     const user = useRecoilValue(userAtom);
     console.log(user);
+    const username = user.data.user.username
     const [post, setPost] = useState(post_);
     const [liked, setLiked] = useState(post_?.likes?.includes(user?.data.user._id));
     // const [posts, setPosts] = useRecoilState(postsAtom);
@@ -32,6 +33,7 @@ const Actions = ({ post: post_ }) => {
     const [isReplying, setIsReplying] = useState(false);
     const [reply, setReply] = useState("");
     const { pid } = useParams()
+    const navigate = useNavigate()
     // console.log(pid);
     console.log(user);
     // console.log(user.data.user._id);
@@ -114,6 +116,9 @@ const Actions = ({ post: post_ }) => {
             showToast("Success", "Reply posted successfully", "success");
             onClose();
             setReply("");
+            navigate(`/${username}`)
+            // navigate(`/${currentPost?.data.postedBy.username}`);
+
         } catch (error) {
             showToast("Error", error.message, "error");
         } finally {

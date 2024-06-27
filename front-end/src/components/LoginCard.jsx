@@ -51,11 +51,6 @@ export default function LoginCard() {
             }
             const data = await res.json();
             console.log("Login successful:", data);
-            // if (data.error) {
-            //     showToast("Error", data.error, "error");
-            //     setLoading(false);
-            //     return;
-            // }
             localStorage.setItem("user-threads", JSON.stringify(data));
             setUser(data);
             setInputs({

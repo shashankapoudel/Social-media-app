@@ -51,7 +51,7 @@ const signupUser = asyncHandler(async (req, res) => {
     }
     if (newUser) {
 
-        return res.status(201).json(new ApiResponse(200, newUser, "Success",))
+        return res.status(200).json(new ApiResponse(200, newUser, "Success",))
     }
 })
 
@@ -189,7 +189,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(400, 'No user with such username found')
     }
-    return res.status(201).json(
+    return res.status(200).json(
         new ApiResponse(200, user, "User Profile found")
     )
 
